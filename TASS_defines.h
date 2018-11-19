@@ -1,8 +1,48 @@
-/* defines for TASS
-*/
+/* TASS - Defines
+ *  
+ * Author: Matthew J. Wolf  <matthew.wolf.hpsdr@speciosus.net>
+ * Date: 18-NOV-2018
+ * 
+ * - Version 0.7-n4mtt
+ *   = Added: 
+ *     -= NUM_TASS_BOARDS_DISPLAY
+ *     -= BLUE
+ *     -= ORANGE
+ *     
+ * - Original author is John Ackermann, N8UR
+ * 
+ * Copyright (c) 2016 John Ackermann
+ * Copyright (c) 2018 Matthew J. Wolf
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files  
+ * (the "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to permit
+ * persons to whom the Software is furnished to do so, subject to the 
+ * following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
+ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
+ * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 
+// The Number of TASS boards to inculde on the ethernet, touchscreen, and USB displays.
+#define NUM_TASS_BOARDS_DISPLAY 4
 
 // The display also uses hardware SPI, plus #9 & #10
+//
+// Ethernet and touch screen shield both use digital pin 10 for
+// a SPI slave select (SS). I moved the capacitive touchscreen SS 
+// from pin 10 to digital pin 2. - N4MTT
+//#define TFT_CS 2
 #define TFT_CS 10
 #define TFT_DC 9
 
@@ -30,8 +70,9 @@
 #define FILL 1
 #define NOFILL 0
 
-
 #define WHITE ILI9341_WHITE
 #define BLACK ILI9341_BLACK
 #define GREEN ILI9341_GREEN
 #define RED ILI9341_RED
+#define BLUE ILI9341_BLUE
+#define ORANGE ILI9341_ORANGE
