@@ -1,27 +1,8 @@
-// TASS 
-//  
+  
 // TASS Control Software by John Ackermann N8UR. 
 // - Features added by Matthew J Wolf, N4MTT 
-//
-// Author: Matthew J. Wolf  <matthew.wolf.hpsdr@speciosus.net>
-// Date: 18-NOV-2018
-// 
-// - Version 0.7-n4mtt 
-//   = Many changes
-//   = Added the I command on USB and Ethernet
-//   = Added support for WIZnet W5500
-//   -= Renamed source file TASS_W5100.ino to TASS_ethernet.ino    
-//   = Added defines 
-//   -= USE_W5500
-//   -= SHOW_INFO_USB
-//   -= SHOW_INFO_ETHERNET
-//   -= USE_EEPROM
-//   = No changes to the LED 8x8 display.
-//
-// - Original author is John Ackermann, N8UR 
-//
-//
-// Copyright (c) 2016 John Ackermann 
+
+// Copyright (c) 2020 John Ackermann 
 // Copyright (c) 2018 Matthew J. Wolf
 //
 // Permission is hereby granted, free of charge, to any person obtaining
@@ -43,8 +24,24 @@
 // TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
 // OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+//
+// Author: Matthew J. Wolf  <matthew.wolf.hpsdr@speciosus.net>
+// Date: 18-NOV-2018
+// 
+// - Version 0.7-n4mtt 
+//   = Many changes
+//   = Added the I command on USB and Ethernet
+//   = Added support for WIZnet W5500
+//   -= Renamed source file TASS_W5100.ino to TASS_ethernet.ino    
+//   = Added defines 
+//   -= USE_W5500
+//   -= SHOW_INFO_USB
+//   -= SHOW_INFO_ETHERNET
+//   -= USE_EEPROM
+//   = No changes to the LED 8x8 display.
 
-char version[] = "v0.70-n4mtt -- 18 Nov 2018";
+
+char version[] = "v0.80 -- 6 June 2020";
 
 // BOF preprocessor bug prevent - insert me on top of your arduino-code
 // From: http://www.a-control.de/arduino-fehler/?lang=en
@@ -53,7 +50,7 @@ __asm volatile ("nop");
 #endif
 
 // uncomment to enable Adafruit 2.8 inch TFT and capacitive touchscreen
-//#define USE_TS
+#define USE_TS
 
 // uncomment to endable Adafruit 1.2 inch 8x8 LED matrix
 //#define USE_LED8X8
@@ -91,16 +88,17 @@ __asm volatile ("nop");
 // so J16 on either board may be used as the common output.
 // - NUM_TASS_BOARDS_DISPLAY_DISPLAY has to be larger than 1 for the affect of 
 //   this define to be included in the displays. 
-#define A_B_COMBINE
+//#define A_B_COMBINE
 
-// uncomment to set board D to double pole mode
+// uncomment to set board A to double pole mode
 // This will cause setting or holding a relay on board D to
 // also set its equivalent on the other bank,  thus pairing
 // 1-5, 2-6, 3-7, 4-8 to create a 4-throw double-pole switch
 // - NUM_TASS_BOARDS_DISPLAY_DISPLAY has to be larger than 3 for the affect of 
 //   this define to be included in the displays. 
-#define D_DOUBLE_POLE
+#define A_DOUBLE_POLE
 
+/*****************************************************************************************************************/
 #include "TASS_defines.h"
 
 #ifdef USE_TS
@@ -334,18 +332,18 @@ void loop() {
           } // switch
        #endif
 
-       // if using board D as double pole, take the final mask and pair relays
+       // if using board A as double pole, take the final mask and pair relays
        // to pair 1&5, 2&6, 3&7, 4&8.  Works both ways, so you can select
        // either the high or low relay to get the pair
-       #ifdef D_DOUBLE_POLE
-          if ((board == 'D') && (relay != 0)) {
+       #ifdef A_DOUBLE_POLE
+          if ((board == 'A') && (relay != 0)) {
             if (relay < 5) {
-              S_mask_D = set_mask(relay + 4,S_mask_D);
+              S_mask_A = set_mask(relay + 4,S_mask_A);
             } else {
-              S_mask_D = set_mask(relay - 4,S_mask_D);
+              S_mask_A = set_mask(relay - 4,S_mask_A);
             }
           }
-       #endif // D_DOUBLE_POLE
+       #endif // A_DOUBLE_POLE
                 }
       // end of command == "S"
 
@@ -423,18 +421,18 @@ void loop() {
                    break;
         } // switch
 
-        // if using board D as double pole, take the final mask and pair relays
+        // if using board A as double pole, take the final mask and pair relays
         // to pair 1&5, 2&6, 3&7, 4&8.  Works both ways, so you can select
         // either the high or low relay to get the pair
-        #ifdef D_DOUBLE_POLE
-           if ((board == 'D') && (relay != 0)) {
+        #ifdef A_DOUBLE_POLE
+           if ((board == 'A') && (relay != 0)) {
               if (relay < 5) {
-                H_mask_D = set_mask(relay + 4,H_mask_D);
+                H_mask_A = set_mask(relay + 4,H_mask_A);
               } else {
-                H_mask_D = set_mask(relay - 4,H_mask_D);
+                H_mask_A = set_mask(relay - 4,H_mask_A);
               }
            }         
-         #endif // D_DOUBLE_POLE
+         #endif // A_DOUBLE_POLE
        } // if
        // end of command == "H"
 

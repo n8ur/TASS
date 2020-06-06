@@ -40,9 +40,10 @@ void usb_setup() {
 // initialize serial:
   Serial.begin(115200);
 // splash
+  Serial.println();
   Serial.println("TAPR TASS Control Software");
   Serial.println(version);
-  Serial.println("Copyright 2015 John Ackermann   N8UR");
+  Serial.println("Copyright 2020 John Ackermann   N8UR");
   Serial.println("Copyright 2018 Matthew J Wolf  N4MTT");
   Serial.println("Licensed under MIT license");
   #ifdef SHOW_INFO_USB 
@@ -138,14 +139,60 @@ void usb_display_info(int board_num) {
   Serial.println(" * :Hold enabled");
 
   if (board_num > 0) {
+      #ifdef A_DOUBLE_POLE
       Serial.print("Board A:");
       #ifdef SPLIT
       Serial.print(" (K9 SPLIT)");
-      #endif      
-      #ifdef A_B_COMBINE
-      Serial.print(" (A and B Combined)");
+      #endif       
+      Serial.println(" (Double Pole)");
+      // Top relay of double pole
+      for ( i=0; i < 4; i++ ) {
+        Serial.print((i+1),DEC);
+        Serial.print(":");
+        if ( digitalRead(A_1 + i) ) {
+          Serial.print("ON");
+          
+          if ( get_bit_mask_state(i, H_mask_A) == 1) {
+            Serial.print("*");
+          }
+          else {
+            Serial.print(" ");
+          }
+        } 
+        else {
+          Serial.print("OFF");
+        }
+        Serial.print(" ");
+      }
+      Serial.println();
+      
+      // Bottom relay of double pole
+      for ( i=0; i < 4; i++ ) {
+        Serial.print((i+5),DEC);
+        Serial.print(":");
+        if ( digitalRead(A_1 + (i+4)) ) {
+          Serial.print("ON");
+          
+          if ( get_bit_mask_state((i+4), H_mask_A) == 1) {
+            Serial.print("*");
+          }
+          else {
+            Serial.print(" ");
+          }
+        } 
+        else {
+          Serial.print("OFF");
+        }
+        Serial.print(" ");
+      }
+      Serial.println();
+
+      #else
+      Serial.print("Board A:");
+      #ifdef SPLIT
+      Serial.print(" (K9 SPLIT)");
       #endif
-      Serial.println(); 
+      Serial.println();    
       for ( i=0; i < 8; i++ ) {
         Serial.print((i+1),DEC);
         Serial.print(":");
@@ -164,6 +211,8 @@ void usb_display_info(int board_num) {
         }
         Serial.print(" ");
       }
+      #endif
+      
       Serial.println();
   }
 
@@ -224,62 +273,13 @@ void usb_display_info(int board_num) {
       Serial.println();
   }  
 
-  if (board_num > 3) {
-      #ifdef D_DOUBLE_POLE
-      Serial.print("Board D:");
-      #ifdef SPLIT
-      Serial.print(" (K9 SPLIT)");
-      #endif       
-      Serial.println(" (Double Pole)");
-      // Top relay of double pole
-      for ( i=0; i < 4; i++ ) {
-        Serial.print((i+1),DEC);
-        Serial.print(":");
-        if ( digitalRead(D_1 + i) ) {
-          Serial.print("ON");
-          
-          if ( get_bit_mask_state(i, H_mask_D) == 1) {
-            Serial.print("*");
-          }
-          else {
-            Serial.print(" ");
-          }
-        } 
-        else {
-          Serial.print("OFF");
-        }
-        Serial.print(" ");
-      }
-      Serial.println();
+    if (board_num > 3) {
       
-
-      // Bottom relay of double pole
-      for ( i=0; i < 4; i++ ) {
-        Serial.print((i+5),DEC);
-        Serial.print(":");
-        if ( digitalRead(D_1 + (i+4)) ) {
-          Serial.print("ON");
-          
-          if ( get_bit_mask_state((i+4), H_mask_D) == 1) {
-            Serial.print("*");
-          }
-          else {
-            Serial.print(" ");
-          }
-        } 
-        else {
-          Serial.print("OFF");
-        }
-        Serial.print(" ");
-      }
-      Serial.println();
-
-      #else
-      Serial.print("Board D:");
+  Serial.print("Board D:");
       #ifdef SPLIT
       Serial.print(" (K9 SPLIT)");
-      #endif
-      Serial.println();    
+      #endif 
+      Serial.println();   
       for ( i=0; i < 8; i++ ) {
         Serial.print((i+1),DEC);
         Serial.print(":");
@@ -299,11 +299,9 @@ void usb_display_info(int board_num) {
         Serial.print(" ");
       }
       Serial.println();
-      #endif
   }  
-  
-  
-}
+}  
+
 
 void usb_display_masks() {
    Serial.println();

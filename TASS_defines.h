@@ -35,7 +35,7 @@
  */
 
 // The Number of TASS boards to inculde on the ethernet, touchscreen, and USB displays.
-#define NUM_TASS_BOARDS_DISPLAY 4
+#define NUM_TASS_BOARDS_DISPLAY 1
 
 // The display also uses hardware SPI, plus #9 & #10
 //

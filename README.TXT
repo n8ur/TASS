@@ -1,3 +1,7 @@
+TASS Software v0.80 (6 June 2020)
+-- Merged in N4MTT's changes from 18 November 2018
+   with a few tweaks (version number, etc.)
+
 TASS Software v0.70-n4mtt (18 November 2018)
 -- Tested support for using both an Ethernet shield and the touch screen
    shield. A version 2 (WIZnet w5500) Ethernet shield is required. The

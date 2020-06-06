@@ -147,6 +147,77 @@ void ethernet_display_info(int board_num) {
   server.write(" * :Hold enabled\n");
 
   if (board_num > 0) {
+      #ifdef A_DOUBLE_POLE
+      server.write("Board A:");
+      #ifdef SPLIT
+      server.write(" (K9 SPLIT)");
+      #endif
+      server.write(" (Double Pole)\n");
+
+      // Top relay of double pole
+      for ( i=0; i < 4; i++ ) {
+        server.write(i+49);
+        server.write(":");
+        if ( digitalRead(A_1 + i) == 1 ) {
+          server.write("ON");
+          if ( get_bit_mask_state(i, H_mask_A) == 1) {
+            server.write("*");
+          }
+          else {
+            server.write(" ");
+          }
+        }
+        else{
+          server.write("OFF ");
+        }
+        server.write(" ");
+      }
+      server.write("\n");
+
+      // Bottom relay of double pole
+      for ( i=0; i < 4; i++ ) {
+        server.write((i+4)+49);
+        server.write(":");
+        if ( digitalRead(A_1 + (i+4)) == 1 ) {
+          server.write("ON");
+          if ( get_bit_mask_state((i+4), H_mask_A) == 1) {
+            server.write("*");
+          }
+          else {
+            server.write(" ");
+          }
+        }
+        else{
+          server.write("OFF ");
+        }
+        server.write(" ");
+      }
+      server.write("\n");
+
+      #else
+      server.write("Board A:");
+      #ifdef SPLIT
+      server.write(" (K9 SPLIT)");
+      #endif
+      server.write("\n");   
+      for ( i=0; i < 8; i++ ) {
+        server.write(i+49);
+        server.write(":");
+        if ( digitalRead(A_1 + i) == 1 ) {
+          server.write("ON");
+          if ( get_bit_mask_state(i, H_mask_A) == 1) {
+            server.write("*");
+          }
+          else {
+            server.write(" ");
+          }
+        }
+        else{
+          server.write("OFF ");
+        }
+        server.write(" ");
+      }
+      #endif
       server.write("Board A:");
       #ifdef SPLIT
       server.write(" (K9 SPLIT)");
@@ -231,55 +302,7 @@ void ethernet_display_info(int board_num) {
       server.write("\n");
   }
 
-  if (board_num > 3) {
-      #ifdef D_DOUBLE_POLE
-      server.write("Board D:");
-      #ifdef SPLIT
-      server.write(" (K9 SPLIT)");
-      #endif
-      server.write(" (Double Pole)\n");
-
-      // Top relay of double pole
-      for ( i=0; i < 4; i++ ) {
-        server.write(i+49);
-        server.write(":");
-        if ( digitalRead(D_1 + i) == 1 ) {
-          server.write("ON");
-          if ( get_bit_mask_state(i, H_mask_D) == 1) {
-            server.write("*");
-          }
-          else {
-            server.write(" ");
-          }
-        }
-        else{
-          server.write("OFF ");
-        }
-        server.write(" ");
-      }
-      server.write("\n");
-
-      // Bottom relay of double pole
-      for ( i=0; i < 4; i++ ) {
-        server.write((i+4)+49);
-        server.write(":");
-        if ( digitalRead(D_1 + (i+4)) == 1 ) {
-          server.write("ON");
-          if ( get_bit_mask_state((i+4), H_mask_D) == 1) {
-            server.write("*");
-          }
-          else {
-            server.write(" ");
-          }
-        }
-        else{
-          server.write("OFF ");
-        }
-        server.write(" ");
-      }
-      server.write("\n");
-
-      #else
+   if (board_num > 3) {
       server.write("Board D:");
       #ifdef SPLIT
       server.write(" (K9 SPLIT)");
@@ -302,7 +325,6 @@ void ethernet_display_info(int board_num) {
         }
         server.write(" ");
       }
-      #endif
   }
 
   server.write("\n");

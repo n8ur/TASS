@@ -94,7 +94,7 @@ boolean get_ts_data() {
  int x_pos = p.y;
  int y_pos = p.x;
 
-   // set board -- all choices are in left-most box space
+  // set board -- all choices are in left-most box space
   if (x_pos <= BOXSIZE) {  
     draw_boards();
     if ( (y_pos < BOXSIZE) 
@@ -625,7 +625,7 @@ void draw_board_status(int board) {
   tft.setTextColor(WHITE, BLACK);
   tft.setTextSize(1);
   tft.setCursor(64, 20);
-  tft.print("K9 SPILT");       
+  tft.print("K9 SPLIT");       
   #endif
 
   // This need for the else if in the ifdef.
@@ -648,13 +648,13 @@ void draw_board_status(int board) {
       tft.print("Board A and B Combined");       
   }  
   #endif
-  #ifdef D_DOUBLE_POLE
-  else if (board == 4) {
+  #ifdef A_DOUBLE_POLE
+  else if (board == 1) {
       tft.setFont(&FreeSans9pt7b);
       tft.setTextColor(WHITE, BLACK);
       tft.setTextSize(1);
       tft.setCursor(70, 20);
-      tft.print("Board D - Double Pole");       
+      tft.print("Board A - Double Pole");       
   }  
   #endif
 } 
@@ -688,8 +688,8 @@ void tft_setup() {
   tft.print("N8UR/TAPR");
   tft.setTextColor(BLUE);
   tft.setCursor(115, 80);
-  tft.print("N4MTT");
-  tft.setTextColor(WHITE);
+//  tft.print("N4MTT");
+//  tft.setTextColor(WHITE);
   tft.setCursor(30, 120);
   tft.print("TASS Controller");
   tft.setFont();
