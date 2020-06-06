@@ -1,3 +1,63 @@
+TASS Software v0.70-n4mtt (18 November 2018)
+-- Tested support for using both an Ethernet shield and the touch screen
+   shield. A version 2 (WIZnet w5500) Ethernet shield is required. The
+   the earlier Ethernet shield is missing four pins that are needed for
+   the touch screen shield.
+   = The Ethernet shield and the touch screen shield both use digital pin 
+     10 as a slave select (SS). I cut the psychical pin for digital pin
+     10 on the touch screen shield. Then I ran a wire from the PCB pad
+     for pin 10 to the pad for digital pin 2. Then in changed the        
+     define TFT_CS from 10 to 2.
+-- Added support for WIZnet w5500 Ethernet shields to use the Ethernet2
+   library.
+   = Enabled with the "USE_W5500" define.
+-- Added displaying the current status of the relays to the telnet
+   server and USB output.
+   = Enable the "SHOW_INFO_ETHERNET" define for display with the telnet
+     server.
+   = Enable the "SHOW_INFO_USB" define for the display with the USB
+     output.
+-- Updated the touch screen display to show the current status of the
+   relays. When the board field is touched the relay fields display the
+   status of the relays. The color of the relay number shows the status
+   the relay.
+   = Red:    The relay is set.
+   = Orange: The relay is "hold".
+-- Added support to not display all four boards on the touch screen and 
+   in the "SHOW_INFO_ETHERNET" and "SHOW_INFO_USB" displays.
+   -= Set the "NUM_TASS_BOARDS_DISPLAY" to the number of boards to 
+      display.
+   --= On the touch screen the fields for the non-displayed boards
+       are not active.
+-- Added saving and restoring the state of the relays after a reset 
+   or power on. The S and H masks are saved to the EEPROM. When the
+   sketch starts to run the S and H masks are read from EEPROM. The
+   masks are then used to restore the state of the relays. 
+   = Enabled with the "USE_EEPROM" define.
+-- Added the "I" command. The I command displays a comma-separated 
+   values (CSV) format of the status of the relays.
+   = Command format:  <'board''relay'I>
+   -= Relay "0" display the status of all the relays on a board.
+   = Output format:
+   -= Relay status:
+   --= Off:  0
+   --= Set:  s
+   --= Hold: h
+   -= Board: (relay 0)
+    i,'board',0,'relay 1 state','relay 2 state', ... 'relay 7 state'
+   --= Example:
+    i,A,0,s,0,0,h,0,0,0 
+   -= Relay:
+    i,'board','relay','state'
+   --= Examples:
+    i,A,1,0
+    i,A,2,s
+    1,A,5,h
+-- No changes where made to the LED 8x8 display.
+-- BUG - Touch Screen: Sometimes the relay status is wrong. Selecting a
+       board will update the relay status. The root cause may be floating
+       emulation. 
+
 TASS Software v0.60 (24 January 2016)
 -- Added #ifdef for "COMBINE_A_B" which causes boards A and B to act
    as a single board for purposes of the "S" command.  This allows for
